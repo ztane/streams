@@ -14,7 +14,7 @@ class Stream(object):
         if len(iterables) == 1:
             self._iterable = iterables[0]
         else:
-            self._iterable = chain(*iterables)
+            self._iterable = chain.from_iterable(iterables)
 
     @classmethod
     def _make_stream(cls, iterable):
