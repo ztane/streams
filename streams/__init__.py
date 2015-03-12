@@ -71,6 +71,7 @@ class Stream(object):
             seen = set()
             for e in self._iterable:
                 if e not in seen:
+                    seen.add(e)
                     yield e
 
         return self._make_stream(gen())
