@@ -1,5 +1,6 @@
 from __future__ import division
-from itertools import islice
+from itertools import islice, chain, starmap
+
 try:
     from future_builtins import filter, map
 except:
@@ -9,11 +10,15 @@ except:
 EMPTY = object()
 
 class Stream(object):
-    def __init__(self, iterable):
-        self._iterable = iterable
+    def __init__(self, *iterables):
+        if len(iterables) == 1:
+            self._iterable = iterables[0]
+        else:
+            self._iterable = chain(*iterables)
 
-    def _make_stream(self, iterable):
-        return type(self)(iterable)
+    @classmethod
+    def _make_stream(cls, iterable):
+        return cls(iterable)
 
     def all_match(self, predicate):
         """
@@ -25,6 +30,13 @@ class Stream(object):
 
     def any_match(self, predicate):
          return any(predicate(i) for i in self._iterable)
+
+    def apply_to(self, func):
+        """
+        Calls the given function with the stream as the parameter;
+        that is apply_to(list) is the same as list(stream).
+        """
+        return func(self._iterable)
 
     def average(self):
         """
@@ -40,14 +52,14 @@ class Stream(object):
         return the_sum / number
 
     def collect(self, supplier, accumulator, combiner):
-         raise NotImplementedError
+        raise NotImplementedError
 
     def count(self):
-         """
-         Return the number of the elements in this stream
-         """
+        """
+        Return the number of the elements in this stream
+        """
 
-         return sum(1 for i in self._iterable)
+        return sum(1 for i in self._iterable)
 
     def distinct(self):
         """
@@ -62,6 +74,9 @@ class Stream(object):
                     yield e
 
         return self._make_stream(gen())
+
+    def enumerate(self, start=0):
+        return self._make_stream(enumerate(self._iterable, start))
 
     @classmethod
     def empty(cls):
@@ -92,7 +107,7 @@ class Stream(object):
             while 1:
                 yield supplier()
 
-        return self._make_stream(gen())
+        return cls._make_stream(gen())
 
     def __getitem__(self, item):
         if isinstance(item, slice):
@@ -155,6 +170,31 @@ class Stream(object):
     def sorted(self, key=None):
         new_data = sorted(self._iterable, key=key)
         return self._make_stream(new_data)
+
+    def starmap(self, mapper):
+        """
+        Maps the iterable arguments from the stream through the func as:
+            new_e = func(*old_e)
+        """
+
+        return self._make_stream(starmap(mapper, self._iterable))
+
+    def starapply_to(self, func):
+        """
+        Calls the given function with the stream as the parameter;
+        that is apply_to(list) is the same as list(stream).
+        """
+        return func(*self._iterable)
+
+    def streammap(self, func):
+        """
+        Map each iterable element through the function as a stream
+        """
+
+        def wrapper(value):
+            return func(self._make_stream(value))
+
+        return self.map(wrapper)
 
     def sum(self):
         return sum(self._iterable)
