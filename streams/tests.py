@@ -58,3 +58,12 @@ class UnitTests(TestCase):
 
         self.assertTrue(Stream(range(10)).all_match(partial(operator.gt, 10)))
         self.assertFalse(Stream(range(10)).all_match(partial(operator.lt, 10)))
+
+    def test_average(self):
+        """
+        Stream.average returns the numeric average of the stream.
+        """
+        from streams import Stream
+
+        self.assertEqual(Stream([0, 2, 7]).average(), 3.0)
+        self.assertEqual(Stream([0, 0, 5, 5]).average(), 2.5)
