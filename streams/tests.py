@@ -2,6 +2,7 @@
 from __future__ import absolute_import, division, print_function
 from unittest import TestCase
 import operator
+from itertools import islice, cycle
 from functools import partial
 from streams import Stream
 
@@ -73,3 +74,24 @@ class UnitTests(TestCase):
         self.assertEqual(Stream(range(0)).count(), 0)
 
         self.assertEqual(Stream(range(10)).count(), 10)
+
+    def test_distinct(self):
+        """
+        Stream.distinct returns a new stream with distinct items from
+        original stream.
+        """
+        self.assertListEqual(
+            Stream(list(range(5)) * 2).distinct().to_list(),
+            [0, 1, 2, 3, 4]
+        )
+
+        self.assertListEqual(
+            Stream(islice(cycle('ABC'), 10)).distinct().to_list(),
+            ['A', 'B', 'C']
+        )
+
+        objs = [object(), object()] * 5
+        self.assertListEqual(
+            Stream(objs).distinct().to_list(),
+            objs[:2]
+        )
