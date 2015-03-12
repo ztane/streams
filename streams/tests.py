@@ -48,3 +48,13 @@ class UnitTests(TestCase):
 
         self.assertTrue(Stream(range(10)).all_match(partial(operator.gt, 10)))
         self.assertFalse(Stream(range(10)).all_match(partial(operator.gt, 5)))
+
+    def test_any_match(self):
+        """
+        Stream.any_match returns True, if any element in the stream matches the
+        predicate, False otherwise
+        """
+        from streams import Stream
+
+        self.assertTrue(Stream(range(10)).all_match(partial(operator.gt, 10)))
+        self.assertFalse(Stream(range(10)).all_match(partial(operator.lt, 10)))
