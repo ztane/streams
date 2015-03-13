@@ -163,8 +163,6 @@ class Stream(object):
         """
         Returns a new stream that consists of the elements of
         this stream mapped through the given mapping function.
-
-        This is a terminal operation.
         """
         return self._make_stream(map(mapper, self._iterable, *others))
 
@@ -172,6 +170,8 @@ class Stream(object):
         """
         Returns the maximum value in this stream, optionally
         sorted by the given key function.
+
+        This is a terminal operation.
         """
         if key == None:
             return max(self._iterable)
