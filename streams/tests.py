@@ -9,6 +9,14 @@ from streams import Stream
 
 class UnitTests(TestCase):
 
+    def test_to_list(self):
+        """
+        Basic Stream to list functionality works as expected.
+        """
+        r = Stream(range(10)).to_list()
+        self.assertIsInstance(r, list)
+        self.assertListEqual(r, list(range(10)))
+
     def test_stream_creation(self):
         """
         Basic Stream creation works as expected.
