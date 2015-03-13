@@ -28,6 +28,8 @@ class Stream(object):
         """
         Returns True if all elements in the stream match the
         predicate, False otherwise.
+
+        This is a terminal operation.
         """
         return all(predicate(i) for i in self._iterable)
 
@@ -35,6 +37,8 @@ class Stream(object):
         """
         Returns True if any element in the stream matches the
         predicate, False otherwise.
+
+        This is a terminal operation.
         """
         return any(predicate(i) for i in self._iterable)
 
@@ -51,12 +55,16 @@ class Stream(object):
         """
         Calls the given function with the stream as the parameter;
         that is apply_to(list) is the same as list(stream).
+
+        This is a terminal operation.
         """
         return func(self._iterable)
 
     def average(self):
         """
         Returns the numeric average of this stream.
+
+        This is a terminal operation.
         """
         the_sum = 0
         number = 0
@@ -72,6 +80,8 @@ class Stream(object):
     def count(self):
         """
         Return the number of the elements in this stream.
+
+        This is a terminal operation.
         """
         return sum(1 for i in self._iterable)
 
@@ -202,7 +212,6 @@ class Stream(object):
             [1, 2, 3]
 
         """
-
         return self._make_stream(values)
 
     def parallel(self):
@@ -211,7 +220,6 @@ class Stream(object):
         A parallel stream is unordered; the order of elements is
         not specified at the terminal operation.
         """
-
         return self
 
     def peek(self, action):
@@ -264,6 +272,7 @@ class Stream(object):
             >>> Stream(range(5)).starapply_to(print)
             0 1 2 3 4
 
+        This is a terminal operation.
         """
         return func(*self._iterable)
 
@@ -281,6 +290,8 @@ class Stream(object):
         """
         Returns the sum of this stream. The elements must be summable
         together.
+
+        This is a terminal operation.
         """
         return sum(self._iterable)
 
