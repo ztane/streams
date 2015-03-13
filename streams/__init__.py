@@ -36,7 +36,7 @@ class Stream(object):
 
     def none_match(self, predicate):
         """
-        Returns true if the `predicate(i)` does not yield 
+        Returns true if the `predicate(i)` does not yield
         a true value for any item in the stream
 
         This is a terminal operator
