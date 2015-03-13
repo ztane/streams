@@ -68,7 +68,6 @@ class Stream(object):
         """
         Return the number of the elements in this stream
         """
-
         return sum(1 for i in self._iterable)
 
     def distinct(self):
@@ -76,7 +75,6 @@ class Stream(object):
         Return a stream with distinct elements from this stream.
         The elements must be hashable.
         """
-
         def gen():
             seen = set()
             for e in self._iterable:
@@ -208,7 +206,6 @@ class Stream(object):
         """
         Map each iterable element through the function as a stream
         """
-
         def wrapper(value):
             return func(self._make_stream(value))
 

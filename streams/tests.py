@@ -340,3 +340,9 @@ class UnitTests(TestCase):
             Stream(args).starmap(operator.add).to_list(),
             list(starmap(operator.add, args))
         )
+
+    def test_sum(self):
+        """
+        Stream.sum returns the sum of numeric stream.
+        """
+        self.assertEqual(Stream(range(10)).sum(), sum(range(10)))
