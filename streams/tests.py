@@ -40,7 +40,7 @@ class UnitTests(TestCase):
     def test_all_match(self):
         """
         Stream.all_match returns True, if all elements in the stream match the
-        predicate, False otherwise
+        predicate, False otherwise.
         """
         self.assertTrue(Stream(range(10)).all_match(partial(operator.gt, 10)))
         self.assertFalse(Stream(range(10)).all_match(partial(operator.gt, 5)))
@@ -48,10 +48,19 @@ class UnitTests(TestCase):
     def test_any_match(self):
         """
         Stream.any_match returns True, if any element in the stream matches the
-        predicate, False otherwise
+        predicate, False otherwise.
         """
-        self.assertTrue(Stream(range(10)).all_match(partial(operator.gt, 10)))
-        self.assertFalse(Stream(range(10)).all_match(partial(operator.lt, 10)))
+        self.assertTrue(Stream(range(10)).any_match(partial(operator.gt, 10)))
+        self.assertTrue(Stream(range(10)).any_match(partial(operator.eq, 9)))
+        self.assertFalse(Stream(range(10)).any_match(partial(operator.eq, 10)))
+
+    def test_none_match(self):
+        """
+        Stream.none_match returns True, if no elements in the stream match the
+        predicate, False otherwise.
+        """
+        self.assertTrue(Stream(range(10)).none_match(partial(operator.lt, 10)))
+        self.assertFalse(Stream(range(10)).none_match(partial(operator.gt, 10)))
 
     def test_average(self):
         """
@@ -190,7 +199,7 @@ class UnitTests(TestCase):
 
     def test_max(self):
         """
-        Stream.max returns the maximum value of iterables, optionally
+        Stream.max returns the maximum value of iterable, optionally
         according to ``key``.
         """
         self.assertEqual(Stream(range(10)).max(), 9)
@@ -203,7 +212,7 @@ class UnitTests(TestCase):
 
     def test_min(self):
         """
-        Stream.max returns the maximum value of iterables, optionally
+        Stream.min returns the minimum value of iterable, optionally
         according to ``key``.
         """
         self.assertEqual(Stream(range(10)).min(), 0)

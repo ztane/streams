@@ -25,11 +25,21 @@ class Stream(object):
         Returns True if all elements in the stream match the
         predicate, False otherwise
         """
-
         return all(predicate(i) for i in self._iterable)
 
     def any_match(self, predicate):
-         return any(predicate(i) for i in self._iterable)
+        """
+        Returns True if any element in the stream matches the
+        predicate, False otherwise
+        """
+        return any(predicate(i) for i in self._iterable)
+
+    def none_match(self, predicate):
+        """
+        Returns True if no elements in the stream match the
+        predicate, False otherwise
+        """
+        return not any(predicate(i) for i in self._iterable)
 
     def apply_to(self, func):
         """
@@ -145,9 +155,6 @@ class Stream(object):
             return min(self._iterable)
 
         return min(self._iterable, key=key)
-
-    def none_match(self, predicate):
-        return not any(predicate(i) for i in self._iterable)
 
     @classmethod
     def of(cls, *values):
