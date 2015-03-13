@@ -54,7 +54,10 @@ class Stream(object):
     def apply_to(self, func):
         """
         Calls the given function with the stream as the parameter;
-        that is apply_to(list) is the same as list(stream).
+        that is ``apply_to(list)`` is the same as ``list(stream)``::
+
+        >>> Stream(range(3)).apply_to(list)
+        [0, 1, 2]
 
         This is a terminal operation.
         """
