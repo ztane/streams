@@ -62,6 +62,20 @@ class UnitTests(TestCase):
         self.assertTrue(Stream(range(10)).none_match(partial(operator.lt, 10)))
         self.assertFalse(Stream(range(10)).none_match(partial(operator.gt, 10)))
 
+    def test_apply_to(self):
+        """
+        Stream.apply_to applies the given function to the iterable and returns
+        the result.
+        """
+        iterable = object()
+        unit = lambda x: x
+        self.assertIs(
+            Stream(iterable).apply_to(unit),
+            iterable
+        )
+
+        self.assertEqual(Stream(range(10)).apply_to(sum), sum(range(10)))
+
     def test_average(self):
         """
         Stream.average returns the numeric average of the stream.
