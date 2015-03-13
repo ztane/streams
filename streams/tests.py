@@ -275,3 +275,13 @@ class UnitTests(TestCase):
         peeker = lambda x: self.assertEqual(x, l2.pop(0))
         s = Stream(l1).peek(peeker)
         self.assertListEqual(s.to_list(), l1)
+
+    def test_skip(self):
+
+        """
+        Stream.skip skips ``n`` elements of stream returning the rest.
+        """
+        self.assertEqual(
+            Stream(range(10)).skip(5).to_list(),
+            list(range(5, 10))
+        )
