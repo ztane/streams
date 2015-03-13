@@ -2,7 +2,7 @@
 from __future__ import absolute_import, division, print_function
 from unittest import TestCase
 import operator
-from itertools import islice, cycle
+from itertools import islice, cycle, starmap
 from functools import partial
 from streams import Stream
 
@@ -229,6 +229,11 @@ class UnitTests(TestCase):
             list(range(1, 11))
         )
 
+        self.assertListEqual(
+            Stream(range(10)).map(operator.add, range(10, 20)).to_list(),
+            list(map(operator.add, range(10), range(10, 20)))
+        )
+
     def test_max(self):
         """
         Stream.max returns the maximum value of iterable, optionally
@@ -324,4 +329,14 @@ class UnitTests(TestCase):
                 reverse=True
             ).to_list(),
             rs
+        )
+
+    def test_starmap(self):
+        """
+        Stream.starmap maps sequence elements from stream using unpacking.
+        """
+        args = zip(range(10), range(10, 20))
+        self.assertListEqual(
+            Stream(args).starmap(operator.add).to_list(),
+            list(starmap(operator.add, args))
         )

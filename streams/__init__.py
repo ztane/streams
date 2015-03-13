@@ -141,8 +141,8 @@ class Stream(object):
     def __next__(self):
         return next(self._iterable)
 
-    def map(self, mapper):
-        return self._make_stream(map(mapper, self._iterable))
+    def map(self, mapper, *others):
+        return self._make_stream(map(mapper, self._iterable, *others))
 
     def max(self, key=None):
         if key == None:
@@ -190,10 +190,11 @@ class Stream(object):
 
     def starmap(self, mapper):
         """
-        Maps the iterable arguments from the stream through the func as:
-            new_e = func(*old_e)
-        """
+        Maps the iterable arguments from the stream through the func as::
 
+            new_e = func(*old_e)
+
+        """
         return self._make_stream(starmap(mapper, self._iterable))
 
     def starapply_to(self, func):
