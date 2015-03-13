@@ -14,6 +14,17 @@ Contents:
 .. autoclass:: streams.Stream
    :members:
 
+Examples
+--------
+
+A basic stream::
+
+    >>> for x in Stream(range(3)):
+    ...     print(x)
+    0
+    1
+    2
+
 Indices and tables
 ==================
 

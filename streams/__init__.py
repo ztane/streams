@@ -10,6 +10,10 @@ except:
 EMPTY = object()
 
 class Stream(object):
+    """
+    Create a new stream instance from ``iterables``.
+    """
+
     def __init__(self, *iterables):
         if len(iterables) == 1:
             self._iterable = iterables[0]
@@ -190,7 +194,11 @@ class Stream(object):
         Returns a new stream whose elements are the star arguments
         given to this function.
 
-        Stream.of(1, 2, 3) returns a stream that yields 1, 2 and 3.
+        Stream.of(1, 2, 3) returns a stream that yields 1, 2 and 3::
+
+            >>> list(Stream.of(1, 2, 3))
+            [1, 2, 3]
+
         """
 
         return self._make_stream(values)
@@ -206,7 +214,7 @@ class Stream(object):
 
     def peek(self, action):
         """
-        Invoke action(e) for each element that passes through the
+        Invoke ``action(e)`` for each element that passes through the
         stream at this point.
         """
         def gen():
