@@ -187,3 +187,16 @@ class UnitTests(TestCase):
             Stream(range(10)).map(lambda x: x + 1).to_list(),
             list(range(1, 11))
         )
+
+    def test_max(self):
+        """
+        Stream.max returns the maximum value of iterables, optionally
+        according to ``key``.
+        """
+        self.assertEqual(Stream(range(10)).max(), 9)
+        self.assertTupleEqual(
+            Stream(zip(range(9, -1, -1), range(10, 20))).max(
+                key=operator.itemgetter(1)
+            ),
+            (0, 19)
+        )

@@ -136,15 +136,15 @@ class Stream(object):
 
     def max(self, key=None):
         if key == None:
-            return max(self._iterator)
+            return max(self._iterable)
 
-        return max(self._iterator, key=key)
+        return max(self._iterable, key=key)
 
     def min(self, key=None):
         if key == None:
-            return min(self._iterator)
+            return min(self._iterable)
 
-        return min(self._iterator, key=key)
+        return min(self._iterable, key=key)
 
     def none_match(self, predicate):
         return not any(predicate(i) for i in self._iterable)
