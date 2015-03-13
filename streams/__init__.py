@@ -188,6 +188,8 @@ class Stream(object):
         if key == None:
             return min(self._iterable)
 
+        return min(self._iterable, key=key)
+
     @classmethod
     def of(self, *values):
         """
@@ -277,6 +279,10 @@ class Stream(object):
         together.
         """
         return sum(self._iterable)
+
+    def partition(self, predicate):
+        """
+        """
 
     def to_list(self):
         return list(self._iterable)
