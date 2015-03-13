@@ -27,8 +27,11 @@ A basic (and rather uninteresting) stream::
 
 Streams offer various operations as methods. For example getting first 10 even integers::
 
-    >>> Stream(range(1000)).filter(lambda x: x % 2 == 0)[:10].to_list()
+    >>> from itertools import count
+    >>> Stream(count()).filter(lambda x: x % 2 == 0)[:10].to_list()
     [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+
+Slicing endless iterators is supported by default.
 
 Indices and tables
 ==================
