@@ -9,6 +9,14 @@ from streams import Stream
 
 class UnitTests(TestCase):
 
+    def test_to_list(self):
+        """
+        Basic Stream to list functionality works as expected.
+        """
+        r = Stream(range(10)).to_list()
+        self.assertIsInstance(r, list)
+        self.assertListEqual(r, list(range(10)))
+
     def test_stream_creation(self):
         """
         Basic Stream creation works as expected.
@@ -335,8 +343,14 @@ class UnitTests(TestCase):
         """
         Stream.starmap maps sequence elements from stream using unpacking.
         """
-        args = zip(range(10), range(10, 20))
+        args = list(zip(range(10), range(10, 20)))
         self.assertListEqual(
             Stream(args).starmap(operator.add).to_list(),
             list(starmap(operator.add, args))
         )
+
+    def test_sum(self):
+        """
+        Stream.sum returns the sum of numeric stream.
+        """
+        self.assertEqual(Stream(range(10)).sum(), sum(range(10)))
