@@ -17,13 +17,18 @@ Contents:
 Examples
 --------
 
-A basic stream::
+A basic (and rather uninteresting) stream::
 
     >>> for x in Stream(range(3)):
     ...     print(x)
     0
     1
     2
+
+Streams offer various operations as methods. For example getting first 10 even integers::
+
+    >>> Stream(range(1000)).filter(lambda x: x % 2 == 0)[:10].to_list()
+    [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
 
 Indices and tables
 ==================
