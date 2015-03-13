@@ -2,7 +2,7 @@
 from __future__ import absolute_import, division, print_function
 from unittest import TestCase
 import operator
-from itertools import islice, cycle, repeat
+from itertools import islice, cycle
 from functools import partial
 from streams import Stream
 
@@ -178,3 +178,12 @@ class UnitTests(TestCase):
         s = Stream(iter(range(10)))
         for x in range(10):
             self.assertEqual(x, next(s))
+
+    def test_map(self):
+        """
+        Stream.map maps mapper over iterables.
+        """
+        self.assertListEqual(
+            Stream(range(10)).map(lambda x: x + 1).to_list(),
+            list(range(1, 11))
+        )
