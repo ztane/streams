@@ -271,17 +271,57 @@ class UnitTests(TestCase):
         stream or altering values.
         """
         l1 = list(range(10))
-        l2 = l1[:]
-        peeker = lambda x: self.assertEqual(x, l2.pop(0))
+        l2 = []
+        peeker = lambda x: l2.append(x)
         s = Stream(l1).peek(peeker)
         self.assertListEqual(s.to_list(), l1)
+        self.assertListEqual(l2, l1)
 
     def test_skip(self):
-
         """
         Stream.skip skips ``n`` elements of stream returning the rest.
         """
         self.assertEqual(
             Stream(range(10)).skip(5).to_list(),
             list(range(5, 10))
+        )
+
+    def test_sorted(self):
+        """
+        Stream.sorted returns the stream... well... sorted.
+        """
+        # An ascending list of integers
+        l1 = list(range(100))
+        # Just "shuffle" l1 a bit
+        l2 = l1[5:] + l1[:5]
+        # Assert that the precondition is proper
+        self.assertNotEqual(l1, l2)
+        self.assertListEqual(
+            Stream(l2).sorted().to_list(),
+            l1
+        )
+
+        lr = l1[::-1]
+        self.assertNotEqual(lr, l2)
+        self.assertListEqual(
+            Stream(l2).sorted(reverse=True).to_list(),
+            lr
+        )
+
+        cs = list(zip("ABCD", range(4)))
+        ds = cs[2:] + cs[:2]
+        self.assertNotEqual(cs, ds)
+        self.assertListEqual(
+            Stream(ds).sorted(key=operator.itemgetter(1)).to_list(),
+            cs
+        )
+
+        rs = cs[::-1]
+        self.assertNotEqual(rs, ds)
+        self.assertListEqual(
+            Stream(ds).sorted(
+                key=operator.itemgetter(1),
+                reverse=True
+            ).to_list(),
+            rs
         )

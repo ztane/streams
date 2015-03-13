@@ -175,10 +175,17 @@ class Stream(object):
         return self
 
     def skip(self, n):
+        """
+        Skips ``n`` elements from this stream and return a stream
+        of the rest.
+        """
         return self._make_stream(islice(self._iterable, n, None))
 
-    def sorted(self, key=None):
-        new_data = sorted(self._iterable, key=key)
+    def sorted(self, key=None, reverse=False):
+        """
+
+        """
+        new_data = sorted(self._iterable, key=key, reverse=reverse)
         return self._make_stream(new_data)
 
     def starmap(self, mapper):
