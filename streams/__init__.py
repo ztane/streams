@@ -25,11 +25,23 @@ class Stream(object):
         Returns True if all elements in the stream match the
         predicate, False otherwise
         """
-
         return all(predicate(i) for i in self._iterable)
 
     def any_match(self, predicate):
-         return any(predicate(i) for i in self._iterable)
+        """
+        Returns True if any element in the stream matches the
+        predicate, False otherwise
+        """
+        return any(predicate(i) for i in self._iterable)
+
+    def none_match(self, predicate):
+        """
+        Returns true if the `predicate(i)` does not yield 
+        a true value for any item in the stream
+
+        This is a terminal operator
+        """
+        return not any(predicate(i) for i in self._iterable)
 
     def apply_to(self, func):
         """
@@ -71,6 +83,7 @@ class Stream(object):
             seen = set()
             for e in self._iterable:
                 if e not in seen:
+                    seen.add(e)
                     yield e
 
         return self._make_stream(gen())
@@ -132,11 +145,12 @@ class Stream(object):
         """
         return self._make_stream(islice(self._iterable, n))
 
+    # PY2 compat
     def next(self):
         """
         Yields the next element from this stream
         """
-        return next(self._iterable)
+        return self.__next__()
 
     def __next__(self):
         """
@@ -144,14 +158,14 @@ class Stream(object):
         """
         return next(self._iterable)
 
-    def map(self, mapper):
+    def map(self, mapper, *others):
         """
         Returns a new stream that consists of the elements of 
         this stream mapped through the given mapping function.
 
         This is a terminal operation
         """
-        return self._make_stream(map(mapper, self._iterable))
+        return self._make_stream(map(mapper, self._iterable, *others))
 
     def max(self, key=None):
         """
@@ -159,9 +173,9 @@ class Stream(object):
         sorted by the given key function.
         """
         if key == None:
-            return max(self._iterator)
+            return max(self._iterable)
 
-        return max(self._iterator, key=key)
+        return max(self._iterable, key=key)
 
     def min(self, key=None):
         """
@@ -171,19 +185,7 @@ class Stream(object):
         This is a terminal operation
         """
         if key == None:
-            return min(self._iterator)
-
-        return min(self._iterator, key=key)
-
-    def none_match(self, predicate):
-        """
-        Returns true if the `predicate(i)` does not yield 
-        a true value for any item in the stream
-
-        This is a terminal operator
-        """
-
-        return not any(predicate(i) for i in self._iterable)
+            return min(self._iterable)
 
     @classmethod
     def of(self, *values):
@@ -225,7 +227,8 @@ class Stream(object):
 
     def skip(self, n):
         """
-        Skip n first elements of this stream
+        Skips ``n`` elements from this stream and return a stream
+        of the rest.
         """
         return self._make_stream(islice(self._iterable, n, None))
 
@@ -239,16 +242,17 @@ class Stream(object):
 
     def starmap(self, mapper):
         """
-        Maps the iterable arguments from the stream through the func as:
-            new_e = func(*old_e)
-        """
+        Maps the iterable arguments from the stream through the func as::
 
+            new_e = func(*old_e)
+
+        """
         return self._make_stream(starmap(mapper, self._iterable))
 
     def starapply_to(self, func):
         """
-        Calls the given function with the stream as the parameter;
-        that is stream.apply_to(func) is the same as func(*stream)
+        Calls the given function with the unpacked stream as parameters;
+        that is starapply_to(func) is the same as func(*stream).
         """
         return func(*self._iterable)
 
