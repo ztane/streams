@@ -124,8 +124,9 @@ class Stream(object):
     def limit(self, n):
         return self._make_stream(islice(self._iterable, n))
 
+    # PY2 compat
     def next(self):
-        return next(self._iterable)
+        return self.__next__()
 
     def __next__(self):
         return next(self._iterable)
