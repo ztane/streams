@@ -254,3 +254,13 @@ class UnitTests(TestCase):
             ),
             (9, 10)
         )
+
+    def test_of(self):
+        """
+        Stream.of creates a new stream from given arguments.
+        """
+        args = [object(), object(), object(), object()]
+        self.assertListEqual(
+            Stream.of(*args).to_list(),
+            args
+        )
