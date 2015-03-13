@@ -259,7 +259,11 @@ class Stream(object):
     def starapply_to(self, func):
         """
         Calls the given function with the unpacked stream as parameters;
-        that is starapply_to(func) is the same as func(*stream).
+        that is ``starapply_to(func)`` is the same as ``func(*stream)``::
+
+            >>> Stream(range(5)).starapply_to(print)
+            0 1 2 3 4
+
         """
         return func(*self._iterable)
 
