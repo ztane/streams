@@ -184,6 +184,24 @@ class UnitTests(TestCase):
             [sentinel] * 10
         )
 
+    def test_getitem(self):
+        """
+        Streams support slicing, but not indexing.
+        """
+        self.assertListEqual(
+            Stream(range(100))[:10].to_list(),
+            list(range(10))
+        )
+
+        try:
+            Stream(range(100))[10]
+
+        except IndexError:
+            pass
+
+        else:
+            self.fail("Indexing streams should raise IndexError")
+
     def test_iter(self):
         """
         Stream supports iterator methods ``__iter__`` and ``__next__``
