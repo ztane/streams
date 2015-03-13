@@ -200,3 +200,16 @@ class UnitTests(TestCase):
             ),
             (0, 19)
         )
+
+    def test_min(self):
+        """
+        Stream.max returns the maximum value of iterables, optionally
+        according to ``key``.
+        """
+        self.assertEqual(Stream(range(10)).min(), 0)
+        self.assertTupleEqual(
+            Stream(zip(range(9, -1, -1), range(10, 20))).min(
+                key=operator.itemgetter(1)
+            ),
+            (9, 10)
+        )
