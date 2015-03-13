@@ -2,7 +2,7 @@
 from __future__ import absolute_import, division, print_function
 from unittest import TestCase
 import operator
-from itertools import islice, cycle
+from itertools import islice, cycle, repeat
 from functools import partial
 from streams import Stream
 
@@ -115,4 +115,48 @@ class UnitTests(TestCase):
         self.assertListEqual(
             Stream(l).enumerate(-10).to_list(),
             list(enumerate(l, -10))
+        )
+
+    def test_empty(self):
+        """
+        Stream.empty creates an empty stream.
+        """
+        self.assertListEqual(Stream.empty().to_list(), [])
+
+    def test_filter(self):
+        """
+        Stream.filter returns only elements matching predicate.
+        """
+        self.assertListEqual(
+            Stream(range(10)).filter(partial(operator.gt, 10)).to_list(),
+            list(range(10))
+        )
+        self.assertListEqual(
+            Stream(range(10)).filter(partial(operator.gt, 5)).to_list(),
+            list(range(5))
+        )
+
+    def test_for_each(self):
+        """
+        Stream.for_each calls given action for each item.
+        """
+        l = list(range(10))
+        Stream(l[:]).for_each(lambda x: self.assertEqual(x, l.pop(0)))
+
+    def test_generate(self):
+        """
+        Stream.generate calls given supplier repeatedly providing items
+        (potentially indefinitely).
+        """
+        supplier = lambda i=iter(range(10)): next(i)
+        self.assertListEqual(
+            Stream.generate(supplier).to_list(),
+            list(range(10))
+        )
+
+        sentinel = object()
+        supplier = lambda: sentinel
+        self.assertListEqual(
+            Stream.generate(supplier)[:10].to_list(),
+            [sentinel] * 10
         )
