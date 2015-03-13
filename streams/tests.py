@@ -354,3 +354,12 @@ class UnitTests(TestCase):
         Stream.sum returns the sum of numeric stream.
         """
         self.assertEqual(Stream(range(10)).sum(), sum(range(10)))
+
+    def test_partition(self):
+        """
+        Stream.partition splits the stream to 2 streams for which
+        the given predicate is True and for the other False.
+        """
+        s_false, s_true = Stream(range(10)).partition(lambda x: x % 2 == 0)
+        self.assertListEqual(list(s_true), [0, 2, 4, 6, 8])
+        self.assertListEqual(list(s_false), [1, 3, 5, 7, 9])
