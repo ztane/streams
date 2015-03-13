@@ -264,3 +264,14 @@ class UnitTests(TestCase):
             Stream.of(*args).to_list(),
             args
         )
+
+    def test_peek(self):
+        """
+        Stream.peek maps function over iterables without consuming the
+        stream or altering values.
+        """
+        l1 = list(range(10))
+        l2 = l1[:]
+        peeker = lambda x: self.assertEqual(x, l2.pop(0))
+        s = Stream(l1).peek(peeker)
+        self.assertListEqual(s.to_list(), l1)
