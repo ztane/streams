@@ -95,3 +95,24 @@ class UnitTests(TestCase):
             Stream(objs).distinct().to_list(),
             objs[:2]
         )
+
+    def test_enumerate(self):
+        """
+        Stream.enumerate returns a tuple stream of (n, i) tuples in the
+        same fashion as builtin.enumerate.
+        """
+        l = [5, 6, 7, 8, 9]
+        self.assertListEqual(
+            Stream(l).enumerate().to_list(),
+            list(enumerate(l))
+        )
+
+        self.assertListEqual(
+            Stream(l).enumerate(1).to_list(),
+            list(enumerate(l, 1))
+        )
+
+        self.assertListEqual(
+            Stream(l).enumerate(-10).to_list(),
+            list(enumerate(l, -10))
+        )
