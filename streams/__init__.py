@@ -183,7 +183,7 @@ class Stream(object):
 
     def sorted(self, key=None, reverse=False):
         """
-
+        Return a new stream with sorted elements.
         """
         new_data = sorted(self._iterable, key=key, reverse=reverse)
         return self._make_stream(new_data)
@@ -199,8 +199,8 @@ class Stream(object):
 
     def starapply_to(self, func):
         """
-        Calls the given function with the stream as the parameter;
-        that is apply_to(list) is the same as list(stream).
+        Calls the given function with the unpacked stream as parameters;
+        that is starapply_to(func) is the same as func(*stream).
         """
         return func(*self._iterable)
 
