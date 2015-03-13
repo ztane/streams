@@ -160,3 +160,21 @@ class UnitTests(TestCase):
             Stream.generate(supplier)[:10].to_list(),
             [sentinel] * 10
         )
+
+    def test_iter(self):
+        """
+        Stream supports iterator methods ``__iter__`` and ``__next__``
+        (``next`` for PY2 people).
+        """
+        l = list(range(10))
+        for x in Stream(l[:]):
+            self.assertEqual(x, l.pop(0))
+
+        self.assertListEqual(
+            list(Stream(range(10))),
+            list(range(10))
+        )
+
+        s = Stream(iter(range(10)))
+        for x in range(10):
+            self.assertEqual(x, next(s))
