@@ -158,7 +158,7 @@ class Stream(object):
 
     def map(self, mapper, *others):
         """
-        Returns a new stream that consists of the elements of 
+        Returns a new stream that consists of the elements of
         this stream mapped through the given mapping function.
 
         This is a terminal operation
@@ -191,7 +191,7 @@ class Stream(object):
         Returns a new stream whose elements are the star arguments
         given to this function.
 
-        Stream.of(1, 2, 3) returns a stream, that yields 1, 2 and 3.
+        Stream.of(1, 2, 3) returns a stream that yields 1, 2 and 3.
         """
 
         return self._make_stream(values)
@@ -207,7 +207,7 @@ class Stream(object):
 
     def peek(self, action):
         """
-        Invoke action(e) for each element that passes through the 
+        Invoke action(e) for each element that passes through the
         stream at this point.
         """
         def gen():
