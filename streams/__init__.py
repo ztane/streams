@@ -23,23 +23,23 @@ class Stream(object):
     def all_match(self, predicate):
         """
         Returns True if all elements in the stream match the
-        predicate, False otherwise
+        predicate, False otherwise.
         """
         return all(predicate(i) for i in self._iterable)
 
     def any_match(self, predicate):
         """
         Returns True if any element in the stream matches the
-        predicate, False otherwise
+        predicate, False otherwise.
         """
         return any(predicate(i) for i in self._iterable)
 
     def none_match(self, predicate):
         """
         Returns true if the `predicate(i)` does not yield
-        a true value for any item in the stream
+        a true value for any item in the stream.
 
-        This is a terminal operator
+        This is a terminal operator.
         """
         return not any(predicate(i) for i in self._iterable)
 
@@ -52,9 +52,8 @@ class Stream(object):
 
     def average(self):
         """
-        Returns the numeric average of this stream
+        Returns the numeric average of this stream.
         """
-
         the_sum = 0
         number = 0
         for i in self._iterable:
@@ -68,7 +67,7 @@ class Stream(object):
 
     def count(self):
         """
-        Return the number of the elements in this stream
+        Return the number of the elements in this stream.
         """
         return sum(1 for i in self._iterable)
 
@@ -122,7 +121,7 @@ class Stream(object):
 
     def __getitem__(self, item):
         """
-        Returns a slice of this stream, as a stream
+        Returns a slice of this stream, as a stream.
         """
         if isinstance(item, slice):
             rv_gen = islice(self._iterable, item.start, item.stop, item.step)
@@ -133,7 +132,7 @@ class Stream(object):
 
     def __iter__(self):
         """
-        Returns an iterator for the contents of this stream
+        Returns an iterator for the contents of this stream.
         """
         return iter(self._iterable)
 
@@ -146,13 +145,13 @@ class Stream(object):
     # PY2 compat
     def next(self):
         """
-        Yields the next element from this stream
+        Yields the next element from this stream.
         """
         return self.__next__()
 
     def __next__(self):
         """
-        Yields the next element from this stream
+        Yields the next element from this stream.
         """
         return next(self._iterable)
 
@@ -161,7 +160,7 @@ class Stream(object):
         Returns a new stream that consists of the elements of
         this stream mapped through the given mapping function.
 
-        This is a terminal operation
+        This is a terminal operation.
         """
         return self._make_stream(map(mapper, self._iterable, *others))
 
@@ -180,7 +179,7 @@ class Stream(object):
         Returns the minimum value in this stream, optionally
         sorted by the given key function.
 
-        This is a terminal operation
+        This is a terminal operation.
         """
         if key == None:
             return min(self._iterable)
@@ -219,7 +218,7 @@ class Stream(object):
 
     def sequential(self):
         """
-        Convert the stream into a sequential stream
+        Convert the stream into a sequential stream.
         """
         return self
 
