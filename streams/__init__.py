@@ -1,5 +1,5 @@
 from __future__ import division
-from itertools import islice, chain, starmap
+from itertools import islice, chain, starmap, tee
 
 try:
     from future_builtins import filter, map
@@ -282,7 +282,20 @@ class Stream(object):
 
     def partition(self, predicate):
         """
+        Partition elements into False entries and True entries::
+
+            >>> sf, st = Stream(range(10)).partition(lambda x: x % 2 == 0)
+            >>> list(sf)
+            [1, 3, 5, 7, 9]
+            >>> list(st)
+            [0, 2, 4, 6, 8]
+
         """
+        s1, s2 = tee(self._iterable)
+        return (
+            self._make_stream(s1).filter(lambda x: not predicate(x)),
+            self._make_stream(s2).filter(predicate)
+        )
 
     def to_list(self):
         return list(self._iterable)
