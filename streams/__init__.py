@@ -148,8 +148,9 @@ class Stream(object):
     def none_match(self, predicate):
         return not any(predicate(i) for i in self._iterable)
 
-    def of(self, *values):
-        return self._make_stream(values)
+    @classmethod
+    def of(cls, *values):
+        return cls._make_stream(values)
 
     def parallel(self):
         return self
