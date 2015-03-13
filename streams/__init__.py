@@ -110,6 +110,9 @@ class Stream(object):
         return cls._make_stream(gen())
 
     def __getitem__(self, item):
+        """
+        Returns a slice of this stream, as a stream
+        """
         if isinstance(item, slice):
             rv_gen = islice(self._iterable, item.start, item.stop, item.step)
             return self._make_stream(rv_gen)
@@ -118,42 +121,95 @@ class Stream(object):
             raise IndexError("Streams only support slicing, not element indexing")
 
     def __iter__(self):
+        """
+        Returns an iterator for the contents of this stream
+        """
         return iter(self._iterable)
 
     def limit(self, n):
+        """
+        Returns a stream that will contain up to n elements of this stream.
+        """
         return self._make_stream(islice(self._iterable, n))
 
     def next(self):
+        """
+        Yields the next element from this stream
+        """
         return next(self._iterable)
 
     def __next__(self):
+        """
+        Yields the next element from this stream
+        """
         return next(self._iterable)
 
     def map(self, mapper):
+        """
+        Returns a new stream that consists of the elements of 
+        this stream mapped through the given mapping function.
+
+        This is a terminal operation
+        """
         return self._make_stream(map(mapper, self._iterable))
 
     def max(self, key=None):
+        """
+        Returns the maximum value in this stream, optionally
+        sorted by the given key function.
+        """
         if key == None:
             return max(self._iterator)
 
         return max(self._iterator, key=key)
 
     def min(self, key=None):
+        """
+        Returns the minimum value in this stream, optionally
+        sorted by the given key function.
+
+        This is a terminal operation
+        """
         if key == None:
             return min(self._iterator)
 
         return min(self._iterator, key=key)
 
     def none_match(self, predicate):
+        """
+        Returns true if the `predicate(i)` does not yield 
+        a true value for any item in the stream
+
+        This is a terminal operator
+        """
+
         return not any(predicate(i) for i in self._iterable)
 
+    @classmethod
     def of(self, *values):
+        """
+        Returns a new stream whose elements are the star arguments
+        given to this function.
+
+        Stream.of(1, 2, 3) returns a stream, that yields 1, 2 and 3.
+        """
+
         return self._make_stream(values)
 
     def parallel(self):
+        """
+        Return a possibly parallelized version of this stream.
+        A parallel stream is unordered; the order of elements is
+        not specified at the terminal operation.
+        """
+
         return self
 
     def peek(self, action):
+        """
+        Invoke action(e) for each element that passes through the 
+        stream at this point.
+        """
         def gen():
             for i in self._iterable:
                 action(i)
@@ -162,13 +218,23 @@ class Stream(object):
         return self._make_stream(gen())
 
     def sequential(self):
+        """
+        Convert the stream into a sequential stream
+        """
         return self
 
     def skip(self, n):
+        """
+        Skip n first elements of this stream
+        """
         return self._make_stream(islice(self._iterable, n, None))
 
-    def sorted(self, key=None):
-        new_data = sorted(self._iterable, key=key)
+    def sorted(self, key=None, reverse=False):
+        """
+        Sort the elements, as if by builtin `sorted`; return a new
+        sequential stream whose elements are in the given sorted order.
+        """
+        new_data = sorted(self._iterable, key=key, reverse=reverse)
         return self._make_stream(new_data)
 
     def starmap(self, mapper):
@@ -182,13 +248,14 @@ class Stream(object):
     def starapply_to(self, func):
         """
         Calls the given function with the stream as the parameter;
-        that is apply_to(list) is the same as list(stream).
+        that is stream.apply_to(func) is the same as func(*stream)
         """
         return func(*self._iterable)
 
     def streammap(self, func):
         """
-        Map each iterable element through the function as a stream
+        Map each iterable element through the function, and return
+        a stream of streams.
         """
 
         def wrapper(value):
@@ -197,6 +264,10 @@ class Stream(object):
         return self.map(wrapper)
 
     def sum(self):
+        """
+        Returns the sum of this stream. The elements must be summable
+        together.
+        """
         return sum(self._iterable)
 
     def to_list(self):
