@@ -335,7 +335,7 @@ class UnitTests(TestCase):
         """
         Stream.starmap maps sequence elements from stream using unpacking.
         """
-        args = zip(range(10), range(10, 20))
+        args = list(zip(range(10), range(10, 20)))
         self.assertListEqual(
             Stream(args).starmap(operator.add).to_list(),
             list(starmap(operator.add, args))
